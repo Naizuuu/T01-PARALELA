@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/sebaz/sources/Trabajo01'
+make: 'funciones.o' is up to date.
+make: Leaving directory '/home/sebaz/sources/Trabajo01'
+ 
