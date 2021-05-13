@@ -13,5 +13,6 @@
 
 void leerdatos();
 void imprimirEspecifico(int id);
+void ordenarMaximos();
 
 #endif /* FUNCIONES_H */
