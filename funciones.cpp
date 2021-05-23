@@ -6,7 +6,7 @@
 using namespace std;
 
 string Estudiante[MAX][15];
-/*string Estudiante_promGeneral[100][3];*/
+string Estudiante_promGeneral[100][3];
 
 void leerdatos() {
     ifstream archivo(NOTAS);
@@ -104,19 +104,37 @@ void leerdatos() {
     archivo.close();
 }
 
-/*void ordenarMaximos() {
-    float mayor;
-    for(int i = 0; i < MAX; i++) {
-        for(int j = 0; j < MAX; j++) {
-            if(stof(Estudiante[i][10]) > stof(Estudiante[j][10])) {
-                mayor = stof(Estudiante[i][10]);
-                Estudiante[i][10] = Estudiante[j][10];
-                Estudiante[j][10] = mayor;
-            }
-            //Estudiante_promGeneral[i][j] = Estudiante[i][j];
-        }
-    }
-}*/
+void ordenarMaximos() {
+	float temp;
+	string aux, auxDos;
+
+	for(int i = 0; i < 50; i++) {
+		for(int j = i + 1; j < 50; j++) {
+			if(stof(Estudiante[j][10]) > stof(Estudiante[i][10])) {
+				//cout << endl << stof(Estudiante[j][10]) << " y " << stof(Estudiante[i][10]) << endl;//DEBUG
+				temp = stof(Estudiante[j][10]);
+				//cout << "temp[float]: " << temp << endl;//DEBUG
+				Estudiante[j][10] = Estudiante[i][10];
+				Estudiante[i][10] = to_string(temp);
+				//cout << "temp[string]: " << to_string(temp) << endl << endl;//DEBUG
+				for(int cont = 0; cont < 10; cont++) {
+                    aux = Estudiante[j][cont];
+                    Estudiante[j][cont] = Estudiante[i][cont];
+                    Estudiante[i][cont] = aux;
+                }
+				for(int contDos = 11; contDos < 14; contDos++) {
+                    auxDos = Estudiante[j][contDos];
+                    Estudiante[j][contDos] = Estudiante[i][contDos];
+                    Estudiante[i][contDos] = auxDos;
+                }
+			}
+		}
+	}
+	//DEBUG
+	for(int cont = 0; cont < 50; cont++) {
+		cout << Estudiante[cont][0] << ": " << Estudiante[cont][10] << endl;
+	}
+}
 
 void imprimirEspecifico(int i) {
     cout << endl << "========" << "[" << i << "]" <<"========" << endl;
