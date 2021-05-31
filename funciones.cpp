@@ -2,18 +2,9 @@
 
 #define NOTAS "archivos/estudiantes.csv"
 #define MAX 20000
-#define LIMITE 50
+#define LIMITE 100 // Datos que se agregan a los nuevos archivos .csv
 
 using namespace std;
-
-/* 
-*		TO DO:
-*	- Crear los .csv nuevos con sus datos correspondientes. (LISTO)
-*	- Eliminar los primeros 100 espacios del arreglo principal.
-*	- 
-*	- 
-*	-
- */
 
 string Estudiante[MAX][15];
 int length;
@@ -24,13 +15,12 @@ void leerdatos() {
     char delimitador = ';';
     int i = 0;
 
-    while(getline(archivo, linea)) { // Entran así -> "ID";"NOMBRE";"PROM_LENG"; []...
+    while(getline(archivo, linea)) { // Entran así -> "ID";"NOMBRE";"PROM_LENG";"[...]"
         stringstream stream(linea);  // Convertir cadena a stream
         string idNum, idUnico, lenguaje, ingles, mats, ciencias, historia, tecnologia, arte, edfisica; // Variables para los datos del .csv
         string promedioUno, promedioDos, promedioTres, promedioCuatro; // Variables para insertar los promedios en la matriz
         float promGeneral, promArtistico, promHumanista, promTecnico;
         float leng, mate, ing, ciencia, hist, tecno, art, edfis;
-
 
         // Obtener los datos del .csv
         getline(stream, idNum, delimitador);
@@ -89,25 +79,6 @@ void leerdatos() {
              Estudiante[i][12] = promedioTres;
              Estudiante[i][13] = promedioCuatro;
         }
-
-        // Imprimir
-        cout << endl << "========" << "[" << i << "]" <<"========" << endl;
-        cout << "Identificador: Nro. " << Estudiante[i][0] << endl;
-        cout << "Nombre: " << Estudiante[i][1] << endl;
-        cout << "Promedio Lenguaje: " << Estudiante[i][2] << endl;
-        cout << "Promedio Ingles: " << Estudiante[i][3] << endl;
-        cout << "Promedio Matematicas: " << Estudiante[i][4] << endl;
-        cout << "Promedio Ciencias Naturales: " << Estudiante[i][5]  << endl;
-        cout << "Promedio Historia: " << Estudiante[i][6] << endl;
-        cout << "Promedio Tecnologia: " << Estudiante[i][7] << endl;
-        cout << "Promedio Arte: " << Estudiante[i][8] << endl;
-        cout << "Promedio Edfisica: " << Estudiante[i][9] << endl;
-        cout << "------ Promedios ------" << endl;
-        cout << "Promedio General: " << Estudiante[i][10] << endl;
-        cout << "Promedio Artistico: " << Estudiante[i][11] << endl;
-        cout << "Promedio Humanista: " << Estudiante[i][12] << endl;
-        cout << "Promedio Tecnico: " << Estudiante[i][13] << endl;
-
         i++;
     }
 	length = i; // Obtener la cantidad de datos
@@ -121,12 +92,9 @@ void ordenarMaximos(int pos) {  // 10 = gral, 11 = artistico, 12 = humanista, 13
 	for(int i = 0; i < length; i++) {
 		for(int j = i + 1; j < length; j++) {
 			if(stof(Estudiante[j][pos]) > stof(Estudiante[i][pos])) {
-				//cout << endl << stof(Estudiante[j][10]) << " y " << stof(Estudiante[i][10]) << endl;//DEBUG
 				temp = stof(Estudiante[j][pos]);
-				//cout << "temp[float]: " << temp << endl;//DEBUG
 				Estudiante[j][pos] = Estudiante[i][pos];
 				Estudiante[i][pos] = to_string(temp);
-				//cout << "temp[string]: " << to_string(temp) << endl << endl;//DEBUG
 				for(int cont = 0; cont < pos; cont++) {
                     aux = Estudiante[j][cont];
                     Estudiante[j][cont] = Estudiante[i][cont];
@@ -140,43 +108,72 @@ void ordenarMaximos(int pos) {  // 10 = gral, 11 = artistico, 12 = humanista, 13
 			}
 		}
 	}
-	//DEBUG
-	//cout << endl << "pos: " << pos << endl;
-	for(int cont = 0; cont < LIMITE; cont++) {
-		cout << Estudiante[cont][0] << ": " << Estudiante[cont][pos] << endl;
+}
+
+void crearCSV(int pos) { // 10 = gral, 11 = artistico, 12 = humanista, 13 = tec
+	if(pos == 10) {
+		ofstream archivo("archivos/maximos.csv");
+		for(int i = 0; i < LIMITE; i++) {
+			archivo << "\"" << Estudiante[i][0] << "\"" << ";";
+			archivo << "\"" << Estudiante[i][1] << "\"" << ";";
+			
+			if(i < LIMITE - 1) {
+				archivo << "\"" << Estudiante[i][pos] << "\"" << endl;
+			} else {
+				archivo << "\"" << Estudiante[i][pos] << "\"";
+			}
+		}
+		archivo.close();
+	}
+  	if(pos == 11) {
+		ofstream archivo("archivos/artistico.csv");
+		for(int i = 0; i < LIMITE; i++) {
+			archivo << "\"" << Estudiante[i][0] << "\"" << ";";
+			archivo << "\"" << Estudiante[i][1] << "\"" << ";";
+			
+			if(i < LIMITE - 1) {
+				archivo << "\"" << Estudiante[i][pos] << "\"" << endl;
+			} else {
+				archivo << "\"" << Estudiante[i][pos] << "\"";
+			}
+		}
+		archivo.close();
+	}
+  	if(pos == 12) {
+		ofstream archivo("archivos/humanismo.csv");
+		for(int i = 0; i < LIMITE; i++) {
+			archivo << "\"" << Estudiante[i][0] << "\"" << ";";
+			archivo << "\"" << Estudiante[i][1] << "\"" << ";";
+			
+			if(i < LIMITE - 1) {
+				archivo << "\"" << Estudiante[i][pos] << "\"" << endl;
+			} else {
+				archivo << "\"" << Estudiante[i][pos] << "\"";
+			}
+		}
+		archivo.close();
+	}
+  	if(pos == 13) {
+		ofstream archivo("archivos/tecnicos.csv");
+		for(int i = 0; i < LIMITE; i++) {
+			archivo << "\"" << Estudiante[i][0] << "\"" << ";";
+			archivo << "\"" << Estudiante[i][1] << "\"" << ";";
+			
+			if(i < LIMITE - 1) {
+				archivo << "\"" << Estudiante[i][pos] << "\"" << endl;
+			} else {
+				archivo << "\"" << Estudiante[i][pos] << "\"";
+			}
+		}
+		archivo.close();
 	}
 }
 
-void crearCSV() {
-	ofstream archivo("archivos/maximos.csv");
+void limpiarArreglo() {
 	for(int i = 0; i < LIMITE; i++) {
-		archivo << "\"" << Estudiante[i][0] << "\"" << ";";
-		archivo << "\"" << Estudiante[i][1] << "\"" << ";";
-		
-		if(i < LIMITE - 1) {
-			archivo << "\"" << Estudiante[i][10] << "\"" << endl;
-		} else {
-			archivo << "\"" << Estudiante[i][10] << "\"";
+		for(int j = 0; j < 14; j++) {
+			Estudiante[i][j] = Estudiante[length - i - 1][j];
 		}
 	}
-	archivo.close();
-}
-
-void imprimirEspecifico(int i) {
-    cout << endl << "========" << "[" << i << "]" <<"========" << endl;
-        cout << "Identificador: Nro. " << Estudiante[i][0] << endl;
-        cout << "Nombre: " << Estudiante[i][1] << endl;
-        cout << "Promedio Lenguaje: " << Estudiante[i][2] << endl;
-        cout << "Promedio Ingles: " << Estudiante[i][3] << endl;
-        cout << "Promedio Matematicas: " << Estudiante[i][4] << endl;
-        cout << "Promedio Ciencias Naturales: " << Estudiante[i][5]  << endl;
-        cout << "Promedio Historia: " << Estudiante[i][6] << endl;
-        cout << "Promedio Tecnologia: " << Estudiante[i][7] << endl;
-        cout << "Promedio Arte: " << Estudiante[i][8] << endl;
-        cout << "Promedio Edfisica: " << Estudiante[i][9] << endl;
-        cout << "------ Promedios ------" << endl;
-        cout << "Promedio General: " << Estudiante[i][10] << endl;
-        cout << "Promedio Artistico: " << Estudiante[i][11] << endl;
-        cout << "Promedio Humanista: " << Estudiante[i][12] << endl;
-        cout << "Promedio Tecnico: " << Estudiante[i][13] << endl;
+	length = length - LIMITE;
 }

@@ -10,21 +10,16 @@ using namespace std;
 
 int main()
 {
+    int dato = 10;
+    leerdatos();
+	while(dato != 14) {
+		ordenarMaximos(dato);
+		crearCSV(dato);
+		limpiarArreglo();
+		dato++;
+	}
     cout << "=== Integrantes ===" << endl << endl;
     cout << "Axel Jerez" << endl;
     cout << "Sebastian Munoz" << endl;
-    leerdatos();
-    cout << endl << endl;
-	
-    //imprimirEspecifico(18);
-
-    cout << endl << endl << "=== DEBUG ===" << endl;
-    ordenarMaximos(10);
-	crearCSV();
-
-	/* for(int i = 0; i < 50; i++) {
-		imprimirEspecifico(i);
-	} */
-
     return 0;
 }
