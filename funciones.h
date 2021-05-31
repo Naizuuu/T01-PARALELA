@@ -13,6 +13,7 @@
 
 void leerdatos();
 void imprimirEspecifico(int id);
-void ordenarMaximos();
+void ordenarMaximos(int pos);
+void crearCSV();
 
 #endif /* FUNCIONES_H */

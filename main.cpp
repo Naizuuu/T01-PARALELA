@@ -15,11 +15,16 @@ int main()
     cout << "Sebastian Munoz" << endl;
     leerdatos();
     cout << endl << endl;
+	
     //imprimirEspecifico(18);
+
     cout << endl << endl << "=== DEBUG ===" << endl;
-    ordenarMaximos();
+    ordenarMaximos(10);
+	crearCSV();
+
 	/* for(int i = 0; i < 50; i++) {
 		imprimirEspecifico(i);
 	} */
+
     return 0;
 }

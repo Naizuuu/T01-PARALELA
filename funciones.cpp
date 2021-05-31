@@ -2,11 +2,21 @@
 
 #define NOTAS "archivos/estudiantes.csv"
 #define MAX 20000
+#define LIMITE 50
 
 using namespace std;
 
+/* 
+*		TO DO:
+*	- Crear los .csv nuevos con sus datos correspondientes. (LISTO)
+*	- Eliminar los primeros 100 espacios del arreglo principal.
+*	- 
+*	- 
+*	-
+ */
+
 string Estudiante[MAX][15];
-string Estudiante_promGeneral[100][3];
+int length;
 
 void leerdatos() {
     ifstream archivo(NOTAS);
@@ -63,7 +73,6 @@ void leerdatos() {
         Estudiante[i][13] = " ";
 
         // Calculo de promedios
-        
         if(istringstream(lenguaje) >> leng && istringstream(mats) >> mate && istringstream(ciencias) >> ciencia && istringstream(ingles) >> ing && istringstream(arte) >> art && istringstream(historia) >> hist && istringstream(tecnologia) >> tecno && istringstream(edfisica) >> edfis) {
              promGeneral = (leng + mate + ing + art + tecno + hist + edfis + ciencia) / 8 ;
              promArtistico = (art + edfis) / 2 ;
@@ -101,28 +110,29 @@ void leerdatos() {
 
         i++;
     }
+	length = i; // Obtener la cantidad de datos
     archivo.close();
 }
 
-void ordenarMaximos() {
+void ordenarMaximos(int pos) {  // 10 = gral, 11 = artistico, 12 = humanista, 13 = tec
 	float temp;
 	string aux, auxDos;
 
-	for(int i = 0; i < 50; i++) {
-		for(int j = i + 1; j < 50; j++) {
-			if(stof(Estudiante[j][10]) > stof(Estudiante[i][10])) {
+	for(int i = 0; i < length; i++) {
+		for(int j = i + 1; j < length; j++) {
+			if(stof(Estudiante[j][pos]) > stof(Estudiante[i][pos])) {
 				//cout << endl << stof(Estudiante[j][10]) << " y " << stof(Estudiante[i][10]) << endl;//DEBUG
-				temp = stof(Estudiante[j][10]);
+				temp = stof(Estudiante[j][pos]);
 				//cout << "temp[float]: " << temp << endl;//DEBUG
-				Estudiante[j][10] = Estudiante[i][10];
-				Estudiante[i][10] = to_string(temp);
+				Estudiante[j][pos] = Estudiante[i][pos];
+				Estudiante[i][pos] = to_string(temp);
 				//cout << "temp[string]: " << to_string(temp) << endl << endl;//DEBUG
-				for(int cont = 0; cont < 10; cont++) {
+				for(int cont = 0; cont < pos; cont++) {
                     aux = Estudiante[j][cont];
                     Estudiante[j][cont] = Estudiante[i][cont];
                     Estudiante[i][cont] = aux;
                 }
-				for(int contDos = 11; contDos < 14; contDos++) {
+				for(int contDos = pos + 1; contDos < 14; contDos++) {
                     auxDos = Estudiante[j][contDos];
                     Estudiante[j][contDos] = Estudiante[i][contDos];
                     Estudiante[i][contDos] = auxDos;
@@ -131,9 +141,25 @@ void ordenarMaximos() {
 		}
 	}
 	//DEBUG
-	for(int cont = 0; cont < 50; cont++) {
-		cout << Estudiante[cont][0] << ": " << Estudiante[cont][10] << endl;
+	//cout << endl << "pos: " << pos << endl;
+	for(int cont = 0; cont < LIMITE; cont++) {
+		cout << Estudiante[cont][0] << ": " << Estudiante[cont][pos] << endl;
 	}
+}
+
+void crearCSV() {
+	ofstream archivo("archivos/maximos.csv");
+	for(int i = 0; i < LIMITE; i++) {
+		archivo << "\"" << Estudiante[i][0] << "\"" << ";";
+		archivo << "\"" << Estudiante[i][1] << "\"" << ";";
+		
+		if(i < LIMITE - 1) {
+			archivo << "\"" << Estudiante[i][10] << "\"" << endl;
+		} else {
+			archivo << "\"" << Estudiante[i][10] << "\"";
+		}
+	}
+	archivo.close();
 }
 
 void imprimirEspecifico(int i) {
